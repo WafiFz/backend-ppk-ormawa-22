@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+
 export const softMiddleware = (prisma: PrismaClient) => {
   prisma.$use(async (params, next) => {
     if (params.action == 'findUnique') {
