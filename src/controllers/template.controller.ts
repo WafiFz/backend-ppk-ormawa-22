@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import TemplateService from '@services/template.service';
 // import { User } from '@prisma/client';
+// import { CreateUserDto } from '@dtos/users.dto';
 
 class TemplateController {
   public templateService = new TemplateService();

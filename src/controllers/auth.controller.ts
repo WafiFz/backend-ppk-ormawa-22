@@ -25,7 +25,7 @@ class AuthController {
 
       const result = { findUser, tokenData };
 
-      res.setHeader('Set-Cookie', [cookie]);
+      // res.setHeader('Set-Cookie', [cookie]);
       res.status(200).json({ data: result, message: 'login' });
     } catch (error) {
       next(error);
