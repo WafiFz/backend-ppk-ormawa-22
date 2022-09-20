@@ -12,7 +12,7 @@ class UserService {
     return allUser;
   }
 
-  public async findUserById(userId: number): Promise<User> {
+  public async findUserById(userId: string): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty');
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
@@ -32,7 +32,7 @@ class UserService {
     return createUserData;
   }
 
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User> {
+  public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
@@ -43,7 +43,7 @@ class UserService {
     return updateUserData;
   }
 
-  public async deleteUser(userId: number): Promise<User> {
+  public async deleteUser(userId: string): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, "User doesn't existId");
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
