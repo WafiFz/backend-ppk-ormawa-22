@@ -27,6 +27,15 @@ enum PupukTransactionStatus {
   @@map("pupuk_transaction_status")
 }
 
+enum PenjemputanSampahTransactionStatus {
+  PENDING
+  PROCESS
+  REJECTED
+  DONE
+
+  @@map("penjemputan_sampah_transaction_status")
+}
+
 model User {
   
   id              String      @id @default(uuid())
@@ -113,6 +122,7 @@ model PenjemputanSampah {
 model PenjemputanSampahTransaction {
   
   id              String        @id @default(uuid())
+  status          PenjemputanSampahTransactionStatus?
   location        String
   date            DateTime
   quantity        Decimal
