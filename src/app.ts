@@ -10,7 +10,7 @@ import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
-import { softMiddleware } from '@middlewares/prisma.middleware';
+// import { softMiddleware } from '@middlewares/prisma.middleware';
 import { logger, stream } from '@utils/logger';
 
 class App {
@@ -27,7 +27,7 @@ class App {
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();
-    this.initializePrisma();
+    // this.initializePrisma();
   }
 
   public listen() {
@@ -80,9 +80,9 @@ class App {
     this.app.use(errorMiddleware);
   }
 
-  private initializePrisma() {
-    this.app.use(softMiddleware);
-  }
+  // private initializePrisma() {
+  //   this.app.use(softMiddleware);
+  // }
 }
 
 export default App;

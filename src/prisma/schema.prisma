@@ -10,13 +10,160 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum PupukTransactionPaymentStatus {
+  VALID
+  UNVALID
+  UNCHECKED
+
+  @@map("pupuk_transaction_payment_status")
+}
+
+enum PupukTransactionStatus {
+  PENDING
+  PROCESS
+  REJECTED
+  DONE
+
+  @@map("pupuk_transaction_status")
+}
+
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  phone_number String
-  profile_picture String
-  rt String
-  rw String
   
+  id              String      @id @default(uuid())
+  name            String      
+  email           String      @unique
+  password        String  
+  phone_number    String
+  profile_picture String?
+  rt              String
+  rw              String
+  
+  sampah                         Sampah[]
+  penjemputan_sampah_transaction PenjemputanSampahTransaction[]
+  pupuk_transaction              PupukTransaction[]
+  
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+}
+
+model Admin {
+  
+  id              String        @id @default(uuid())
+  name            String  
+  email           String        @unique
+  password        String  
+  phone_number    String
+  
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+}
+
+model Petugas {
+  
+  id              String        @id @default(uuid())
+  name            String
+  role            String
+  phone_number    String
+  
+  penjemputan_sampah            PenjemputanSampah[]
+
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+}
+
+model Sampah {
+  
+  id              String        @id @default(uuid())  
+  selling_price   Decimal?
+  sampah_category String
+  
+  user_id       String        
+  user          User          @relation(fields: [user_id], references: [id])
+  penjemputan_sampah_transaction PenjemputanSampahTransaction[]
+  
+  created_at      DateTime      @default(now())
+  update_at       DateTime?     
+  deleted_at      DateTime? 
+  
+}
+
+model PenjemputanSampah {
+  
+  id              String        @id @default(uuid())
+  schedule        DateTime
+  name            String?
+  
+  petugas_id      String
+  petugas         Petugas       @relation(fields: [petugas_id], references: [id])
+  penjemputan_sampah_transaction PenjemputanSampahTransaction[]
+  
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+  @@map("penjemputan_sampah")
+}
+
+model PenjemputanSampahTransaction {
+  
+  id              String        @id @default(uuid())
+  location        String
+  date            DateTime
+  quantity        Decimal
+  
+  user_id                  String
+  user                     User                   @relation(fields: [user_id], references: [id])
+  sampah_id                String
+  sampah                   Sampah                 @relation(fields: [sampah_id], references: [id])
+  penjemputan_sampah_id    String
+  penjemputan_sampah       PenjemputanSampah      @relation(fields: [penjemputan_sampah_id], references: [id])
+  
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+  @@map("penjemputan_sampah_transaction")
+}
+
+model Pupuk {
+  
+  id              String        @id @default(uuid())
+  name            String
+  description     String
+  price           Decimal
+  sender_address  String
+  phone_number    String
+  
+  pupuk_transaction PupukTransaction[]
+
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+}
+
+model PupukTransaction  {
+  id                    String        @id @default(uuid())
+  status                PupukTransactionStatus?
+  quantity              Decimal
+  payment_date          DateTime
+  payment_receipt_image String
+  payment_status        PupukTransactionPaymentStatus
+
+  user_id         String
+  user            User                   @relation(fields: [user_id], references: [id])
+  pupuk_id        String
+  pupuk           Pupuk                   @relation(fields: [pupuk_id], references: [id])
+
+  created_at      DateTime      @default(now())
+  update_at       DateTime?
+  deleted_at      DateTime?
+
+  @@map("pupuk_transaction")
 }

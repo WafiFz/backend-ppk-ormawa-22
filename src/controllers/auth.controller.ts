@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '@prisma/client';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
 
 class AuthController {
   public authService = new AuthService();
 
-  public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
       const signUpUserData: User = await this.authService.signup(userData);
@@ -20,11 +20,13 @@ class AuthController {
 
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: CreateUserDto = req.body;
-      const { cookie, findUser } = await this.authService.login(userData);
+      const userData: LoginUserDto = req.body;
+      const { cookie, findUser, tokenData } = await this.authService.login(userData);
+
+      const result = { findUser, tokenData };
 
       res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: findUser, message: 'login' });
+      res.status(200).json({ data: result, message: 'login' });
     } catch (error) {
       next(error);
     }
