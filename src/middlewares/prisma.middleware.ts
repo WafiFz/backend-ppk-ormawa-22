@@ -19,18 +19,18 @@ export const softMiddleware = (prisma: PrismaClient) => {
           }
         }
       }
-      params.args.where['deletedAt'] = null;
+      params.args.where['deleted_at'] = null;
     }
     if (params.action == 'findMany') {
       if (!params.args) {
         params.args = {};
       }
       if (params.args?.where != undefined) {
-        if (params.args.where.deletedAt == undefined) {
-          params.args.where['deletedAt'] = null;
+        if (params.args.where.deleted_at == undefined) {
+          params.args.where['deleted_at'] = null;
         }
       } else {
-        params.args['where'] = { deletedAt: null };
+        params.args['where'] = { deleted_at: null };
       }
     }
     return next(params);
@@ -43,14 +43,14 @@ export const softMiddleware = (prisma: PrismaClient) => {
       if (!params.args.data) {
         params.args.data = {};
       }
-      params.args.data['updatedAt'] = new Date();
+      params.args.data['updated_at'] = new Date();
     }
     return next(params);
   });
   prisma.$use(async (params, next) => {
     if (params.action == 'delete') {
       params.action = 'update';
-      params.args['data'] = { deletedAt: new Date() };
+      params.args['data'] = { deleted_at: new Date() };
     }
     if (params.action == 'deleteMany') {
       if (!params.args) {
@@ -58,9 +58,9 @@ export const softMiddleware = (prisma: PrismaClient) => {
       }
       params.action = 'updateMany';
       if (params.args?.data != undefined) {
-        params.args.data['deletedAt'] = new Date();
+        params.args.data['deleted_at'] = new Date();
       } else {
-        params.args['data'] = { deletedAt: new Date() };
+        params.args['data'] = { deleted_at: new Date() };
       }
     }
     return next(params);

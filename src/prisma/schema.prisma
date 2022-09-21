@@ -52,7 +52,7 @@ model User {
   pupuk_transaction              PupukTransaction[]
   
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
 }
@@ -66,7 +66,7 @@ model Admin {
   phone_number    String
   
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
 }
@@ -81,7 +81,7 @@ model Petugas {
   penjemputan_sampah            PenjemputanSampah[]
 
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
 }
@@ -97,7 +97,7 @@ model Sampah {
   penjemputan_sampah_transaction PenjemputanSampahTransaction[]
   
   created_at      DateTime      @default(now())
-  update_at       DateTime?     
+  updated_at      DateTime?     
   deleted_at      DateTime? 
   
 }
@@ -113,7 +113,7 @@ model PenjemputanSampah {
   penjemputan_sampah_transaction PenjemputanSampahTransaction[]
   
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
   @@map("penjemputan_sampah")
@@ -135,7 +135,7 @@ model PenjemputanSampahTransaction {
   penjemputan_sampah       PenjemputanSampah      @relation(fields: [penjemputan_sampah_id], references: [id])
   
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
   @@map("penjemputan_sampah_transaction")
@@ -153,7 +153,7 @@ model Pupuk {
   pupuk_transaction PupukTransaction[]
 
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
 }
@@ -169,10 +169,10 @@ model PupukTransaction  {
   user_id         String
   user            User                   @relation(fields: [user_id], references: [id])
   pupuk_id        String
-  pupuk           Pupuk                   @relation(fields: [pupuk_id], references: [id])
+  pupuk           Pupuk                  @relation(fields: [pupuk_id], references: [id])
 
   created_at      DateTime      @default(now())
-  update_at       DateTime?
+  updated_at      DateTime?
   deleted_at      DateTime?
 
   @@map("pupuk_transaction")

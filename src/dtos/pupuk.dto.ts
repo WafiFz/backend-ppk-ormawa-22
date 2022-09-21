@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IsDefined, IsNumber, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreatePupukDto {
   @IsDefined()
@@ -19,6 +19,28 @@ export class CreatePupukDto {
   public sender_address: string;
 
   @IsDefined()
+  @IsString()
+  public phone_number: string;
+}
+
+export class UpdatePupukDto {
+  @IsOptional()
+  @IsString()
+  public name: string;
+
+  @IsOptional()
+  @IsString()
+  public description: string;
+
+  @IsOptional()
+  @IsNumber()
+  public price: number;
+
+  @IsOptional()
+  @IsString()
+  public sender_address: string;
+
+  @IsOptional()
   @IsString()
   public phone_number: string;
 }

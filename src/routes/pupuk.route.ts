@@ -3,7 +3,7 @@ import PupukController from '@controllers/pupuk.controller';
 import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@middlewares/auth.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
-import { CreatePupukDto } from '@dtos/pupuk.dto';
+import { CreatePupukDto, UpdatePupukDto } from '@dtos/pupuk.dto';
 
 class TemplateRoute implements Routes {
   public path = '/pupuk';
@@ -15,11 +15,9 @@ class TemplateRoute implements Routes {
   }
 
   private initializeRoutes() {
-    // this.router.post(`${this.path}register`, validationMiddleware(CreateUserDto, 'body'), this.templateController.register);
-    // this.router.post(`${this.path}login`, validationMiddleware(LoginUserDto, 'body'), this.templateController.logIn);
-    // this.router.post(`${this.path}logout`, authMiddleware, this.templateController.logOut);
-    this.router.post(`${this.path}`, [validationMiddleware(CreatePupukDto, 'body'), authMiddleware], this.pupukController.createPupuk);
+    this.router.post(`${this.path}`, [authMiddleware, validationMiddleware(CreatePupukDto, 'body')], this.pupukController.createPupuk);
     this.router.get(`${this.path}`, authMiddleware, this.pupukController.getAllPupuk);
+    this.router.put(`${this.path}/:id`, validationMiddleware(UpdatePupukDto, 'body', true), this.pupukController.updatePupuk);
   }
 }
 
