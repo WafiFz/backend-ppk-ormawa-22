@@ -38,6 +38,17 @@ class PupukController {
       next(error);
     }
   };
+
+  public deletePupuk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const pupukId = req.params.id;
+      const deletePupukData: Pupuk = await this.pupukService.deletePupuk(pupukId);
+
+      res.status(200).json({ data: deletePupukData, message: 'Pupuk deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default PupukController;

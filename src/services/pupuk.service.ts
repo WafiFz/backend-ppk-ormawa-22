@@ -6,10 +6,10 @@ import { softMiddleware } from '@middlewares/prisma.middleware';
 
 class PupukService {
   public pupuk = new PrismaClient().pupuk;
-  public pupukSoft = new PrismaClient();
+  public prismaSoft = new PrismaClient();
 
   public async findAllPupuk(): Promise<Pupuk[]> {
-    const allPupuk: Pupuk[] = await this.pupuk.findMany();
+    const allPupuk: Pupuk[] = await this.prismaSoft.pupuk.findMany();
     return allPupuk;
   }
 
@@ -21,15 +21,27 @@ class PupukService {
   }
 
   public async updatePupuk(pupukId: string, pupukData: UpdatePupukDto): Promise<Pupuk> {
-    softMiddleware(this.pupukSoft);
+    softMiddleware(this.prismaSoft);
 
     if (isEmpty(pupukData)) throw new HttpException(400, 'pupukData is empty');
 
-    const findPupuk: Pupuk = await this.pupuk.findUnique({ where: { id: pupukId } });
+    const findPupuk: Pupuk = await this.prismaSoft.pupuk.findUnique({ where: { id: pupukId } });
     if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
 
-    const updatePupukData = await this.pupukSoft.pupuk.update({ where: { id: pupukId }, data: pupukData });
+    const updatePupukData = await this.prismaSoft.pupuk.update({ where: { id: pupukId }, data: pupukData });
     return updatePupukData;
+  }
+
+  public async deletePupuk(pupukId: string): Promise<Pupuk> {
+    softMiddleware(this.prismaSoft);
+
+    if (isEmpty(pupukId)) throw new HttpException(400, "Pupuk id doesn't exist");
+
+    const findPupuk: Pupuk = await this.prismaSoft.pupuk.findUnique({ where: { id: pupukId } });
+    if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
+
+    const deletePupukData = await this.prismaSoft.pupuk.delete({ where: { id: pupukId } });
+    return deletePupukData;
   }
 }
 export default PupukService;

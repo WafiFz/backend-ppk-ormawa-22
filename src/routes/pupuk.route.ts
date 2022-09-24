@@ -18,6 +18,7 @@ class TemplateRoute implements Routes {
     this.router.post(`${this.path}`, [authMiddleware, validationMiddleware(CreatePupukDto, 'body')], this.pupukController.createPupuk);
     this.router.get(`${this.path}`, authMiddleware, this.pupukController.getAllPupuk);
     this.router.put(`${this.path}/:id`, validationMiddleware(UpdatePupukDto, 'body', true), this.pupukController.updatePupuk);
+    this.router.delete(`${this.path}/:id`, this.pupukController.deletePupuk);
   }
 }
 
