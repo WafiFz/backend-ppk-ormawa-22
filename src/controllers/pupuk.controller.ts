@@ -16,6 +16,17 @@ class PupukController {
     }
   };
 
+  public getPupukById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const pupukId = req.params.id;
+      const findOnePupukData: Pupuk = await this.pupukService.findPupukById(pupukId);
+
+      res.status(200).json({ data: findOnePupukData, message: 'findOne pupuk' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createPupuk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const pupukData: CreatePupukDto = req.body;

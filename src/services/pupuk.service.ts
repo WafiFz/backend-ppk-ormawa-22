@@ -13,6 +13,15 @@ class PupukService {
     return allPupuk;
   }
 
+  public async findPupukById(pupukId: string): Promise<Pupuk> {
+    if (isEmpty(pupukId)) throw new HttpException(400, 'PupukId is empty');
+
+    const findPupuk: Pupuk = await this.pupuk.findUnique({ where: { id: pupukId } });
+    if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
+
+    return findPupuk;
+  }
+
   public async createPupuk(pupukData: CreatePupukDto): Promise<Pupuk> {
     if (isEmpty(pupukData)) throw new HttpException(400, 'pupukData is empty');
 
