@@ -1,8 +1,8 @@
 import { CreatePupukDto, UpdatePupukDto } from '@dtos/pupuk.dto';
 import { HttpException } from '@exceptions/HttpException';
+import { softMiddleware } from '@middlewares/prisma.middleware';
 import { PrismaClient, Pupuk } from '@prisma/client';
 import { isEmpty } from '@utils/util';
-import { softMiddleware } from '@middlewares/prisma.middleware';
 
 class PupukService {
   public pupuk = new PrismaClient().pupuk;

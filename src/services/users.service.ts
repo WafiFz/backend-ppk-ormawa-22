@@ -3,9 +3,11 @@ import { PrismaClient, User } from '@prisma/client';
 import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
+import { softMiddleware } from '@middlewares/prisma.middleware';
 
 class UserService {
   public users = new PrismaClient().user;
+  public prismaSoft = new PrismaClient();
 
   public async findAllUser(): Promise<User[]> {
     const allUser: User[] = await this.users.findMany();
@@ -44,12 +46,13 @@ class UserService {
   }
 
   public async deleteUser(userId: string): Promise<User> {
+    softMiddleware(this.prismaSoft);
     if (isEmpty(userId)) throw new HttpException(400, "User doesn't existId");
 
-    const findUser: User = await this.users.findUnique({ where: { id: userId } });
+    const findUser: User = await this.prismaSoft.user.findUnique({ where: { id: userId } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-    const deleteUserData = await this.users.delete({ where: { id: userId } });
+    const deleteUserData = await this.prismaSoft.user.delete({ where: { id: userId } });
     return deleteUserData;
   }
 }
