@@ -1,57 +1,57 @@
 import { SECRET_KEY } from '@config';
-import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
+import { CreateAdminDto, LoginAdminDto } from '@dtos/admin.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { softMiddleware } from '@middlewares/prisma.middleware';
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, Admin } from '@prisma/client';
 import { isEmpty } from '@utils/util';
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 
-class AuthService {
-  public users = new PrismaClient().user;
+class AuthAdminService {
+  public admin = new PrismaClient().admin;
   public prismaSoft = new PrismaClient();
 
-  public async signup(userData: CreateUserDto): Promise<User> {
+  public async signup(adminData: CreateAdminDto): Promise<Admin> {
     softMiddleware(this.prismaSoft);
 
-    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    if (isEmpty(adminData)) throw new HttpException(400, 'adminData is empty');
 
-    const findUser: User = await this.prismaSoft.user.findUnique({ where: { email: userData.email } });
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    const findAdmin: Admin = await this.prismaSoft.admin.findFirst({ where: { username: adminData.username } });
+    if (findAdmin) throw new HttpException(409, `This username ${adminData.username} already exists`);
 
-    const hashedPassword = await hash(userData.password, 10);
-    const createUserData: Promise<User> = this.users.create({ data: { ...userData, password: hashedPassword } });
+    const hashedPassword = await hash(adminData.password, 10);
+    const createAdminData: Promise<Admin> = this.admin.create({ data: { ...adminData, password: hashedPassword } });
 
-    return createUserData;
+    return createAdminData;
   }
 
-  public async login(userData: LoginUserDto): Promise<{ cookie: string; findUser: User; tokenData: TokenData }> {
-    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+  public async login(adminData: LoginAdminDto): Promise<{ cookie: string; findAdmin: Admin; tokenData: TokenData }> {
+    if (isEmpty(adminData)) throw new HttpException(400, 'adminData is empty');
 
-    const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
-    if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+    const findAdmin: Admin = await this.prismaSoft.admin.findFirst({ where: { username: adminData.username } });
+    if (!findAdmin) throw new HttpException(409, `This username ${adminData.username} was not found`);
 
-    const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
+    const isPasswordMatching: boolean = await compare(adminData.password, findAdmin.password);
     if (!isPasswordMatching) throw new HttpException(409, 'Password is not matching');
 
-    const tokenData = this.createToken(findUser);
+    const tokenData = this.createToken(findAdmin);
     const cookie = this.createCookie(tokenData);
 
-    return { cookie, findUser, tokenData };
+    return { cookie, findAdmin, tokenData };
   }
 
-  public async logout(userData: User): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+  public async logout(adminData: Admin): Promise<Admin> {
+    if (isEmpty(adminData)) throw new HttpException(400, 'adminData is empty');
 
-    const findUser: User = await this.users.findFirst({ where: { email: userData.email, password: userData.password } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    const findAdmin: Admin = await this.prismaSoft.admin.findFirst({ where: { username: adminData.username, password: adminData.password } });
+    if (!findAdmin) throw new HttpException(409, "Admin doesn't exist");
 
-    return findUser;
+    return findAdmin;
   }
 
-  public createToken(user: User): TokenData {
-    const dataStoredInToken: DataStoredInToken = { id: user.id };
+  public createToken(admin: Admin): TokenData {
+    const dataStoredInToken: DataStoredInToken = { id: admin.id };
     const secretKey: string = SECRET_KEY;
     const expiresIn: number = 60 * 24 * 60 * 60;
 
@@ -63,4 +63,4 @@ class AuthService {
   }
 }
 
-export default AuthService;
+export default AuthAdminService;

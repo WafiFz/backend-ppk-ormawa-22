@@ -1,40 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IsDefined, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsOptional, IsString } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateAdminDto {
   @IsDefined()
   @IsString()
   public name: string;
 
   @IsDefined()
-  @IsEmail()
-  public email: string;
+  @IsString()
+  public username: string;
 
   @IsDefined()
   @IsString()
   public password: string;
 
-  @IsDefined()
-  @IsString()
-  public phone_number: string;
-
-  @IsDefined()
-  @IsString()
-  public rt: string;
-
-  @IsDefined()
-  @IsString()
-  public rw: string;
-
   @IsOptional()
   @IsString()
-  public region: string;
+  public phone_number: string;
 }
 
-export class LoginUserDto {
+export class LoginAdminDto {
   @IsDefined()
-  @IsEmail()
-  public email: string;
+  @IsString()
+  public username: string;
 
   @IsDefined()
   @IsString()

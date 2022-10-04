@@ -90,7 +90,7 @@ model Sampah {
   address_notes               String
   sampah_category             SampahCategory
   schedule_pickup             SampahSchedule
-  status                      SampahStatus
+  status                      SampahStatus  @default(PENJEMPUTAN_BARU)
   status_description          String?
   
   user_id                     String        
@@ -108,7 +108,7 @@ model Pupuk {
   address                     String
   quantity                    Decimal
   total_price                 Decimal
-  status                      PupukStatus
+  status                      PupukStatus   @default(PESANAN_BARU)
   status_description          String?
   
   created_at                  DateTime      @default(now())

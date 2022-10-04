@@ -1,23 +1,23 @@
-import { Router } from 'express';
-import AuthController from '@controllers/auth.controller';
-import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
+import AuthAdminController from '@controllers/authAdmin.controller';
+import { CreateAdminDto, LoginAdminDto } from '@dtos/admin.dto';
 import { Routes } from '@interfaces/routes.interface';
-import authMiddleware from '@middlewares/auth.middleware';
+import { authMiddleware, authAdminMiddleware } from '@middlewares/auth.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
+import { Router } from 'express';
 
 class AuthRoute implements Routes {
-  public path = '/admin';
+  public path = '/admin/';
   public router = Router();
-  public authController = new AuthController();
+  public authAdminController = new AuthAdminController();
 
   constructor() {
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}register`, validationMiddleware(CreateUserDto, 'body'), this.authController.register);
-    this.router.post(`${this.path}login`, validationMiddleware(LoginUserDto, 'body'), this.authController.logIn);
-    this.router.post(`${this.path}logout`, authMiddleware, this.authController.logOut);
+    this.router.post(`${this.path}register`, validationMiddleware(CreateAdminDto, 'body'), this.authAdminController.register);
+    this.router.post(`${this.path}login`, validationMiddleware(LoginAdminDto, 'body'), this.authAdminController.logIn);
+    this.router.post(`${this.path}logout`, authAdminMiddleware, this.authAdminController.logOut);
   }
 }
 
