@@ -17,7 +17,7 @@ class AuthService {
 
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = await this.prismaSoft.user.findUnique({ where: { email: userData.email } });
+    const findUser: User = await this.prismaSoft.user.findFirst({ where: { email: userData.email } });
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
@@ -29,7 +29,7 @@ class AuthService {
   public async login(userData: LoginUserDto): Promise<{ cookie: string; findUser: User; tokenData: TokenData }> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
+    const findUser: User = await this.users.findFirst({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
