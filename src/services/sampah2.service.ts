@@ -9,7 +9,7 @@ class SampahService {
   public prismaSoft = new PrismaClient();
 
   public async findAllSampah(): Promise<Sampah[]> {
-    const allSampah: Sampah[] = await this.prismaSoft.sampah.findMany();
+    const allSampah: Sampah[] = await this.prismaSoft.sampah.findMany({ orderBy: { created_at: 'desc' } });
     return allSampah;
   }
 

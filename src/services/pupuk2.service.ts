@@ -9,7 +9,7 @@ class PupukService {
   public prismaSoft = new PrismaClient();
 
   public async findAllPupuk(): Promise<Pupuk[]> {
-    const allPupuk: Pupuk[] = await this.prismaSoft.pupuk.findMany();
+    const allPupuk: Pupuk[] = await this.prismaSoft.pupuk.findMany({ orderBy: { created_at: 'desc' } });
     return allPupuk;
   }
 
