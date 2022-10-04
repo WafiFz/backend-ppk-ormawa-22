@@ -13,14 +13,14 @@ class SampahService {
     return allSampah;
   }
 
-  // public async findPupukById(pupukId: string): Promise<Pupuk> {
-  //   if (isEmpty(pupukId)) throw new HttpException(400, 'PupukId is empty');
+  public async findSampahById(sampahId: string): Promise<Sampah> {
+    if (isEmpty(sampahId)) throw new HttpException(400, 'PupukId is empty');
 
-  //   const findPupuk: Pupuk = await this.prismaSoft.sampah.findUnique({ where: { id: pupukId } });
-  //   if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
+    const findSampah: Sampah = await this.prismaSoft.sampah.findUnique({ where: { id: sampahId } });
+    if (!findSampah) throw new HttpException(409, "Pupuk doesn't exist");
 
-  //   return findPupuk;
-  // }
+    return findSampah;
+  }
 
   public async createSampah(sampahData: CreateSampahDto): Promise<Sampah> {
     if (isEmpty(sampahData)) throw new HttpException(400, 'sampahData is empty');
@@ -29,28 +29,28 @@ class SampahService {
     return createSampahData;
   }
 
-  // public async updatePupuk(pupukId: string, pupukData: UpdatePupukDto): Promise<Pupuk> {
-  //   softMiddleware(this.prismaSoft);
+  public async updateSampah(sampahId: string, sampahData: UpdateSampahDto): Promise<Sampah> {
+    softMiddleware(this.prismaSoft);
 
-  //   if (isEmpty(pupukData)) throw new HttpException(400, 'pupukData is empty');
+    if (isEmpty(sampahData)) throw new HttpException(400, 'sampahData is empty');
 
-  //   const findPupuk: Pupuk = await this.prismaSoft.sampah.findUnique({ where: { id: pupukId } });
-  //   if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
+    const findSampah: Sampah = await this.prismaSoft.sampah.findUnique({ where: { id: sampahId } });
+    if (!findSampah) throw new HttpException(409, "Sampah doesn't exist");
 
-  //   const updatePupukData = await this.prismaSoft.sampah.update({ where: { id: pupukId }, data: pupukData });
-  //   return updatePupukData;
-  // }
+    const updateSampahData = await this.prismaSoft.sampah.update({ where: { id: sampahId }, data: sampahData });
+    return updateSampahData;
+  }
 
-  // public async deletePupuk(pupukId: string): Promise<Pupuk> {
-  //   softMiddleware(this.prismaSoft);
+  public async deleteSampah(sampahId: string): Promise<Sampah> {
+    softMiddleware(this.prismaSoft);
 
-  //   if (isEmpty(pupukId)) throw new HttpException(400, "Pupuk id doesn't exist");
+    if (isEmpty(sampahId)) throw new HttpException(400, "Sampah id doesn't exist");
 
-  //   const findPupuk: Pupuk = await this.prismaSoft.sampah.findUnique({ where: { id: pupukId } });
-  //   if (!findPupuk) throw new HttpException(409, "Pupuk doesn't exist");
+    const findSampah: Sampah = await this.prismaSoft.sampah.findUnique({ where: { id: sampahId } });
+    if (!findSampah) throw new HttpException(409, "Sampah doesn't exist");
 
-  //   const deletePupukData = await this.prismaSoft.sampah.delete({ where: { id: pupukId } });
-  //   return deletePupukData;
-  // }
+    const deleteSampahData = await this.prismaSoft.sampah.delete({ where: { id: sampahId } });
+    return deleteSampahData;
+  }
 }
 export default SampahService;

@@ -81,5 +81,5 @@ export class UpdateSampahDto {
 
   @IsOptional()
   @IsUUID()
-  public user_id: User;
+  public user_id: string;
 }

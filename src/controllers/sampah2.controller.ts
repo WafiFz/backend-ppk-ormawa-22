@@ -16,16 +16,16 @@ class SampahController2 {
     }
   };
 
-  // public getPupukById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const pupukId = req.params.id;
-  //     const findOnePupukData: Pupuk = await this.pupukService.findPupukById(pupukId);
+  public getSampahById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const sampahId = req.params.id;
+      const findOnePupukData: Sampah = await this.sampahService.findSampahById(sampahId);
 
-  //     res.status(200).json({ data: findOnePupukData, message: 'findOne pupuk' });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ data: findOnePupukData, message: 'findOne sampah' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public createSampah = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -38,28 +38,28 @@ class SampahController2 {
     }
   };
 
-  // public updatePupuk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const pupukId = req.params.id;
-  //     const pupukData: UpdatePupukDto = req.body;
-  //     const updatePupukData: Pupuk = await this.pupukService.updatePupuk(pupukId, pupukData);
+  public updateSampah = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const sampahId = req.params.id;
+      const sampahData: UpdateSampahDto = req.body;
+      const updateSampahData: Sampah = await this.sampahService.updateSampah(sampahId, sampahData);
 
-  //     res.status(200).json({ data: updatePupukData, message: 'Pupuk updated' });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ data: updateSampahData, message: 'Sampah updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  // public deletePupuk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const pupukId = req.params.id;
-  //     const deletePupukData: Pupuk = await this.pupukService.deletePupuk(pupukId);
+  public deleteSampah = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const sampahId = req.params.id;
+      const deletePupukData: Sampah = await this.sampahService.deleteSampah(sampahId);
 
-  //     res.status(200).json({ data: deletePupukData, message: 'Pupuk deleted' });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ data: deletePupukData, message: 'Sampah deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default SampahController2;

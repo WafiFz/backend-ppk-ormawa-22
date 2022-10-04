@@ -17,9 +17,9 @@ class SampahRoute2 implements Routes {
   private initializeRoutes() {
     this.router.post(`${this.path}`, [authMiddleware, validationMiddleware(CreateSampahDto, 'body')], this.sampahController.createSampah);
     this.router.get(`${this.path}`, authAdminMiddleware, this.sampahController.getAllSampah);
-    // this.router.get(`${this.path}/:id`, authAdminMiddleware, this.sampahController.getPupukById);
-    // this.router.put(`${this.path}/:id`, authAdminMiddleware, validationMiddleware(UpdateSampahDto, 'body', true), this.sampahController.updatePupuk);
-    // this.router.delete(`${this.path}/:id`, authAdminMiddleware, this.sampahController.deletePupuk);
+    this.router.get(`${this.path}/:id`, authAdminMiddleware, this.sampahController.getSampahById);
+    this.router.put(`${this.path}/:id`, authAdminMiddleware, validationMiddleware(UpdateSampahDto, 'body', true), this.sampahController.updateSampah);
+    this.router.delete(`${this.path}/:id`, authAdminMiddleware, this.sampahController.deleteSampah);
   }
 }
 
